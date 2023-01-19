@@ -74,7 +74,7 @@ type VirtualMachine struct {
 
 	*pointer
 	dispatchQueue unsafe.Pointer
-	status        cgo.Handle
+	status        *cgo.Handle
 
 	mu sync.Mutex
 }
@@ -117,7 +117,7 @@ func NewVirtualMachine(config *VirtualMachineConfiguration) (*VirtualMachine, er
 			),
 		),
 		dispatchQueue: dispatchQueue,
-		status:        status,
+		status:        &status,
 	}
 
 	objc.SetFinalizer(v, func(self *VirtualMachine) {

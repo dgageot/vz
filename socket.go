@@ -108,7 +108,7 @@ func (v *VirtioSocketDevice) Listen(port uint32) (*VirtioSocketListener, error) 
 		pointer:     objc.NewPointer(ptr),
 		vsockDevice: v,
 		port:        port,
-		handler:     handler,
+		handler:     &handler,
 		acceptch:    ch,
 	}
 
@@ -171,7 +171,7 @@ type connResults struct {
 type VirtioSocketListener struct {
 	*pointer
 	vsockDevice *VirtioSocketDevice
-	handler     cgo.Handle
+	handler     *cgo.Handle
 	port        uint32
 	acceptch    chan connResults
 	closeOnce   sync.Once
