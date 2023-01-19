@@ -7,6 +7,7 @@ package vz
 */
 import "C"
 import (
+	"errors"
 	"fmt"
 	"net"
 	"os"
@@ -327,4 +328,15 @@ func (v *VirtioSocketConnection) DestinationPort() uint32 {
 // SourcePort returns the source port number of the connection.
 func (v *VirtioSocketConnection) SourcePort() uint32 {
 	return v.sourcePort
+}
+
+type closeWriter interface {
+	CloseWrite() error
+}
+
+func (v *VirtioSocketConnection) CloseWrite() error {
+	if cw, ok := v.rawConn.(closeWriter); ok {
+		return cw.CloseWrite()
+	}
+	return errors.New("not supported")
 }
